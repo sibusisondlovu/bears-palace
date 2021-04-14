@@ -19,8 +19,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Widget _buildImage(String assetName) {
     return Align(
-      child: Image.asset('assets/$assetName.jpg', width: 350.0),
-      alignment: Alignment.bottomCenter,
+      child: Image.asset('assets/images/quad_biking_intro.jpeg', width: 350.0),
     );
   }
 
@@ -39,21 +38,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       key: introKey,
       pages: [
         PageViewModel(
-          title: "Heading One",
+          title: "SPA Treatment",
           body:
           "Body One textgoes here",
           image: _buildImage('img1'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Heading Two",
+          title: "Quad Biking",
           body:
           "Body of heading two goes here",
           image: _buildImage('img2'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Heading Three",
+          title: "Horse Riding",
           body:
           "Body of heading three goes here",
           image: _buildImage('img3'),

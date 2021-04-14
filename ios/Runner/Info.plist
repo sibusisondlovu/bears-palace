@@ -52,5 +52,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+    <string>YES</string>
+    <key>NSCameraUsageDescription</key>
+    	<string>App need permission to use camera</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>App needs permission to access your photo gallery</string>
 </dict>
 </plist>

@@ -18,6 +18,8 @@ dependencies:
   autocomplete_textfield: ^1.7.3
   datetime_picker_formfield: ^1.0.0
   introduction_screen: ^1.0.9
+  circular_profile_avatar: ^1.0.8
+  image_picker: ^0.6.4
 
 dev_dependencies:
   flutter_test:
