@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "39917150532",
+    "project_id": "the-bears-palace",
+    "storage_bucket": "the-bears-palace.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39917150532:android:3bb2c78c157df5ab35f711",
+        "android_client_info": {
+          "package_name": "co.za.jaspa.bears_palace_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39917150532-fv11t13og9b4k2j15fntt8gpt99msnuf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "co.za.jaspa.bears_palace_app",
+            "certificate_hash": "05e4de3efcc13e74f205f4a1f8a3fbca2568c1c9"
+          }
+        },
+        {
+          "client_id": "39917150532-dsai7q3mqjhmetcmd19hcg7uvm2iir27.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7nOWAE_BZ7yy1oNd4ruyhM34Y8EcH6oM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39917150532-dsai7q3mqjhmetcmd19hcg7uvm2iir27.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
