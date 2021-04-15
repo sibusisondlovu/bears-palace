@@ -1,4 +1,5 @@
 import 'package:bears_palace_app/pages/recreation/recreation_services_list.dart';
+import 'package:bears_palace_app/screens/spa/spa_services_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../colors.dart';
@@ -26,7 +27,14 @@ class DayVisitsPage extends StatelessWidget {
                 },
                 child: Image.asset('assets/images/recreation.jpg')),
             SizedBox(height: 10,),
-            Image.asset('assets/images/spa.jpg'),
+            GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SpaServicesScreen()),
+                  );
+                },
+                child: Image.asset('assets/images/spa.jpg')),
           ],
         ),
       ),

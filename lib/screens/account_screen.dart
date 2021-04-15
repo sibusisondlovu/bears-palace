@@ -41,7 +41,7 @@ class _AccountScreenState extends State<AccountScreen> {
     var response = await http.get(endpointUrl);
     _userDetails = json.decode(response.body);
 
-    print(_userDetails[0]['name']);
+    print(_userDetails[0]['avatar']);
 
     setState(() {
       isLoading = false;
@@ -51,9 +51,6 @@ class _AccountScreenState extends State<AccountScreen> {
 
 
   void _openGallery() async {
-
-    print('Open Image Gallery');
-
     var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
@@ -65,10 +62,8 @@ class _AccountScreenState extends State<AccountScreen> {
   void _setImageFileName(var picture){
 
     imageFile = picture;
-    fileName = "pictureOne.jpg";
+    fileName = FirebaseAuth.instance.currentUser.uid+ ".jpg";
     String base64Image = base64Encode(imageFile.readAsBytesSync());
-
-    //itemPhotos.addAll({"mainPhoto": fileName});
 
     _uploadFileToServer(fileName,base64Image);
 
@@ -84,6 +79,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
         if (result.body == 'success') {
           print('im going to the next page');
+          // dismmiss progress bar on the image. put progress bar
         }else{
           print('failed');
         }
@@ -150,7 +146,6 @@ class _AccountScreenState extends State<AccountScreen> {
             0.5), //sets foreground colour, it works if showInitialTextAbovePicture = true , default Colors.transparent
         cacheImage: true, // allow widget to cache image against provided url
         onTap: () {
-          print('adil');
           _openGallery();
         }, // sets on tap
         showInitialTextAbovePicture:
