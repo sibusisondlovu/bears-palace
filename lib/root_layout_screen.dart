@@ -3,7 +3,6 @@ import 'package:bears_palace_app/screens/account_screen.dart';
 import 'package:bears_palace_app/screens/book_screen.dart';
 import 'package:bears_palace_app/screens/home_screen.dart';
 import 'package:bears_palace_app/screens/photos_screen.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class RootLayoutScreen extends StatefulWidget {

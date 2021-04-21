@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bears_palace_app/colors.dart';
 import 'package:bears_palace_app/pages/day_visits_page.dart';
 import 'package:bears_palace_app/screens/activation/activate_profile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -23,17 +24,23 @@ class _HomeScreenState extends State<HomeScreen> {
         .authStateChanges()
         .listen((User user) async {
       if (user == null) {
-        print('User is currently signed out!');
+        // print('User is currently signed out!');
       } else {
-        var endpointUrl = 'http://backend.bearspalace.co.za/api/v1/users/get_user_details.php';
-        Map<String, String> queryParams = {
-          'uid': user.uid
-        };
-        String queryString = Uri(queryParameters: queryParams).query;
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+          if (documentSnapshot.exists) {
+            setState(() {
+              _userInfo = documentSnapshot.data();
+            });
 
-        var requestUrl = endpointUrl + '?' + queryString;
-        var response = await http.get(requestUrl);
-        _userInfo = json.decode(response.body);
+            print('Document data: ${documentSnapshot.data()}');
+          } else {
+            print('Document does not exist on the database with UID:' + user.uid);
+          }
+        });
       }
     });
 
@@ -72,27 +79,27 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: _userInfo !=null? Text('Hello, '+  _userInfo[0]['name'] ):  Text('Hello, Guest'),
+                  child: _userInfo !=null? Text('Hello, '+  _userInfo['displayName'] ):  Text('Hello, Guest'),
                 ),
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Your Bears Palace Points',),
+                        Text('Your have Bears Bucks'),
                         ListTile(
-                          title: _userInfo!=null? Text(_userInfo[0]['points'] +' bp', style: TextStyle(
+                          title: _userInfo!=null? Text(_userInfo['points'].toString() +' BB', style: TextStyle(
                             fontSize: 28
-                          ),): Text('0.00 bp', style: TextStyle(
+                          ),): Text('0.00 BB', style: TextStyle(
                               fontSize: 28
                           ),),
                           trailing: OutlineButton(
                             child: Text('Redeem'),
                           ),
                         ),
-                        _userInfo !=null && _userInfo[0]['status']== 'ACTIVATED'? Container(): Text('Your account has not been activated. Please activate account to use full app features'),
-                        RaisedButton(onPressed: (){
+                        _userInfo !=null && _userInfo['status']== 'ACTIVATED'? Container(): Text('Your account has not been activated. Please activate account to use full app features'),
+                        _userInfo !=null && _userInfo['status']== 'ACTIVATED'? Container(): RaisedButton(onPressed: (){
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => ActivateProfile()),

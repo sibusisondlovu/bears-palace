@@ -1,7 +1,6 @@
 import 'package:bears_palace_app/screens/activation/profile_activation_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../../colors.dart';
 
 class ActivateProfile extends StatefulWidget {
   @override

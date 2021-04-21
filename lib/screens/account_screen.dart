@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +15,7 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  bool isProfileActivated = true;
+  bool isProfileActivated = false;
   File imageFile;
   String fileName;
   File tmpFile;
@@ -38,14 +39,14 @@ class _AccountScreenState extends State<AccountScreen> {
   //  String queryString = Uri(queryParameters: queryParams).query;
 
   //  var requestUrl = endpointUrl + '?' + queryString;
-    var response = await http.get(endpointUrl);
-    _userDetails = json.decode(response.body);
-
-    print(_userDetails[0]['avatar']);
-
-    setState(() {
-      isLoading = false;
-    });
+  //   var response = await http.get(endpointUrl);
+  //   _userDetails = json.decode(response.body);
+  //
+  //   print(_userDetails[0]['avatar']);
+  //
+  //   setState(() {
+  //     isLoading = false;
+  //   });
 
   }
 
@@ -71,22 +72,22 @@ class _AccountScreenState extends State<AccountScreen> {
 
   void _uploadFileToServer(String filename, String base64) {
     try {
-      http.post(avatarBaseUrl+ 'upload_image.php', body:{
-        "image": base64,
-        "name": filename,
-      }).then((result){
-        print('SERVER RESPONSE ' + result.body);
-
-        if (result.body == 'success') {
-          print('im going to the next page');
-          // dismmiss progress bar on the image. put progress bar
-        }else{
-          print('failed');
-        }
-      }).catchError((onError){
-        print('SERVER RESPONSE with error $onError');
-
-      });
+      // http.post(avatarBaseUrl+ 'upload_image.php', body:{
+      //   "image": base64,
+      //   "name": filename,
+      // }).then((result){
+      //   print('SERVER RESPONSE ' + result.body);
+      //
+      //   if (result.body == 'success') {
+      //     print('im going to the next page');
+      //     // dismmiss progress bar on the image. put progress bar
+      //   }else{
+      //     print('failed');
+      //   }
+      // }).catchError((onError){
+      //   print('SERVER RESPONSE with error $onError');
+      //
+      // });
     }catch (error) {
       print("SERVER ERROR $error");
 
@@ -95,18 +96,38 @@ class _AccountScreenState extends State<AccountScreen> {
 
 
   void checkIfUserIsLoggedIn() {
-    FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseAuth.instance
+        .authStateChanges()
+        .listen((User user) {
+      if (user == null) {
+        setState(() {
+          isProfileActivated = false;
+        });
+      } else {
+        // get user details from CloudFirestore
+        // cache this
 
-    if (auth.currentUser != null) {
-      setState(() {
-        isProfileActivated = true;
-        getCurrentUserDetails();
-      });
-    }else{
-      setState(() {
-        isProfileActivated = false;
-      });
-    }
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+          if (documentSnapshot.exists) {
+            setState(() {
+              _userDetails = documentSnapshot.data();
+            });
+
+            print('Document data: ${documentSnapshot.data()}');
+          } else {
+            print('Document does not exist on the database with UID:' + user.uid);
+          }
+        });
+
+        setState(() {
+          isProfileActivated = true;
+        });
+      }
+    });
   }
 
   @override
@@ -133,7 +154,7 @@ class _AccountScreenState extends State<AccountScreen> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: CircularProfileAvatar(
-        _userDetails[0]['avatar'] !=null? avatarBaseUrl +  _userDetails[0]['avatar'] : 'Guest', //sets image path, it should be a URL string. default value is empty string, if path is empty it will display only initials
+        'https://i.pravatar.cc/300', //sets image path, it should be a URL string. default value is empty string, if path is empty it will display only initials
         radius: 100, // sets radius, default 50.0
         backgroundColor:
             Colors.transparent, // sets background color, default Colors.white
@@ -162,15 +183,15 @@ class _AccountScreenState extends State<AccountScreen> {
         children: [
           _buildProfileHeader(context),
           Text(
-            _userDetails[0]['name'] !=null? _userDetails[0]['name'] : 'Guest',
+            _userDetails != null? _userDetails['displayName']: 'Guest',
             style: TextStyle(fontSize: 18),
           ),
           Text(
-            _userDetails[0]['level'] !=null? _userDetails[0]['level'] : 'BLUEBEAR',
+            _userDetails != null? _userDetails['level'].toString().toUpperCase(): 'BLUEBEAR',
             style: TextStyle(fontSize: 12),
           ),
           Text(
-            _userDetails[0]['points'] !=null? _userDetails[0]['points'] : '0 bp',
+            _userDetails != null? _userDetails['points'].toString() + ' BB':  '0 BB',
             style: TextStyle(fontSize: 12),
           ),
           Row(
@@ -184,7 +205,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     child: Column(
                       children: [
                         Text(
-                          _userDetails[0]['photos'] !=null? _userDetails[0]['photos'] : '0',
+                          _userDetails != null? _userDetails['photos'].toString(): '0',
                           style: TextStyle(fontSize: 38),
                         ),
                         Text('PHOTOS')
@@ -201,7 +222,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     child: Column(
                       children: [
                         Text(
-                          _userDetails[0]['followers'] !=null? _userDetails[0]['followers'] : '0',
+                          _userDetails != null? _userDetails['followers'].toString(): '0',
                           style: TextStyle(fontSize: 38),
                         ),
                         Text('FOLLOWERS')
@@ -218,7 +239,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     child: Column(
                       children: [
                         Text(
-                          _userDetails[0]['following'] !=null? _userDetails[0]['following'] : '0',
+                          _userDetails != null? _userDetails['following'].toString():  '0',
                           style: TextStyle(fontSize: 38),
                         ),
                         Text('FOLLOWING')

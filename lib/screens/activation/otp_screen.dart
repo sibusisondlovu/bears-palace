@@ -1,5 +1,6 @@
 import 'package:bears_palace_app/root_layout_screen.dart';
 import 'package:bears_palace_app/screens/home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -114,7 +115,9 @@ class _OtpScreenState extends State<OtpScreen> {
 
               children: [
                 SizedBox(height: 20),
-                Text('Please wait while we auto verify SMS sent \n' + formattedPhoneNumber + '. If auto-verification fails, please \nenter the code sent below', textAlign: TextAlign.center,),
+                Text('Please wait while we auto verify SMS sent \n' +
+                    formattedPhoneNumber + '. If auto-verification fails, please \nenter the code sent below',
+                  textAlign: TextAlign.center,),
                 Padding(
                   padding: const EdgeInsets.all(30.0),
                   child: PinPut(
@@ -129,6 +132,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     followingFieldDecoration: pinPutDecoration,
                     pinAnimationType: PinAnimationType.fade,
                     onSubmit: (pin) async {
+                      print('on submit called.');
                       try {
                         await FirebaseAuth.instance
                             .signInWithCredential(PhoneAuthProvider.credential(
@@ -145,9 +149,15 @@ class _OtpScreenState extends State<OtpScreen> {
                           }
                         });
                       } catch (e) {
-                        FocusScope.of(context).unfocus();
-                        _scaffoldkey.currentState
-                            .showSnackBar(SnackBar(content: Text('invalid OTP')));
+                        CoolAlert.show(
+                          context: context,
+                          type: CoolAlertType.error,
+                          title: "Oops...",
+                          text: "Sorry, something went wrong \n" + e.toString(),
+                        );
+                        // FocusScope.of(context).unfocus();
+                        // _scaffoldkey.currentState
+                        //     .showSnackBar(SnackBar(content: Text('invalid OTP')));
                       }
                     },
                   ),
@@ -188,6 +198,28 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   void addUserOnDatabase(String displayName, String uid, String phoneNumber)  async{
+
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    users.add({
+        'displayName': displayName,
+        'uid': uid,
+        'phoneNumber': phoneNumber,
+        'points' : 100,
+        'level': 'Basic',
+        'avatar': '',
+        'createdAt': DateTime.now().toString()
+      })
+          .then((value) => print("User Added"))
+          .catchError((error) => {
+              CoolAlert.show(
+                   context: context,
+                   type: CoolAlertType.error,
+                   title: "Oops...",
+                   text: "Sorry, something went wrong \n" + error.toString(),
+                 )
+          });
+
     // try {
     //
     // }catch (error) {
@@ -200,14 +232,14 @@ class _OtpScreenState extends State<OtpScreen> {
     //   );
     //}
 
-    final response = await http.post(
-        "http://backend.bearspalace.co.za/api/v1/users/create_user.php",
-        body: {
-          "uid": uid,
-          "name": displayName,
-          "contactNumber": phoneNumber,
-        });
-    print(response.body);
+    // final response = await http.post(
+    //     "http://backend.bearspalace.co.za/api/v1/users/create_user.php",
+    //     body: {
+    //       "uid": uid,
+    //       "name": displayName,
+    //       "contactNumber": phoneNumber,
+    //     });
+    // print(response.body);
 
   }
 }

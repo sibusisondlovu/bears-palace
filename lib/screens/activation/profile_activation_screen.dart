@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cool_alert/cool_alert.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../colors.dart';
@@ -12,6 +15,83 @@ class _ProfileActivationScreenState extends State<ProfileActivationScreen> {
 
   String _name;
   String _phoneNumber;
+  bool isBusyCreatingAccount = false;
+
+  void createUserAccount() async {
+    print('creating user account....');
+
+    setState(() {
+      isBusyCreatingAccount = true;
+    });
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _phoneNumber + '@bearspalace.co.za',
+          password: "SuperSecretPassword!@123"
+      );
+
+      CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+      users.doc(userCredential.user.uid).set({
+        'displayName': _name,
+        'uid': userCredential.user.uid,
+        'phoneNumber': _phoneNumber,
+        'points' : 100,
+        'level': 'Basic',
+        'avatar': 'https://i.pravatar.cc/300',
+        'photos': 0,
+        'following': 0,
+        'followers': 0,
+        'status': 'ACTIVATED',
+        'createdAt': DateTime.now().toString()
+      })
+          .then((value) {
+              setState(() {
+                isBusyCreatingAccount = false;
+              });
+                  CoolAlert.show(
+                    context: context,
+                    type: CoolAlertType.success,
+                    title: "Account Activated",
+                    text: "Congratulations, your account has been activated, and you have receive 100BB",
+                  );
+
+                  Navigator.pop(context);
+      })
+          .catchError((error){
+              setState(() {
+                isBusyCreatingAccount = false;
+              });
+              CoolAlert.show(
+                context: context,
+                type: CoolAlertType.error,
+                title: "Oops...",
+                text: "Sorry, something went wrong \n" + error.toString(),
+              );
+      });
+
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        isBusyCreatingAccount = false;
+      });
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that cellphone number.');
+      }
+    } catch (e) {
+      setState(() {
+        isBusyCreatingAccount = false;
+      });
+      print(e);
+      CoolAlert.show(
+        context: context,
+        type: CoolAlertType.error,
+        title: "Oops...",
+        text: "Sorry, something went wrong \n" + e.toString(),
+      );
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,7 +119,7 @@ class _ProfileActivationScreenState extends State<ProfileActivationScreen> {
                 SizedBox(height: 20,),
                 _buildForm(context),
 
-                FlatButton(
+                isBusyCreatingAccount? CircularProgressIndicator(): FlatButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
@@ -47,9 +127,10 @@ class _ProfileActivationScreenState extends State<ProfileActivationScreen> {
                   textColor: Colors.red,
                   padding: EdgeInsets.all(10.0),
                   onPressed: () {
+                    createUserAccount();
                     // check if form is valid
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => OtpScreen(_name,_phoneNumber)));
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => OtpScreen(_name,_phoneNumber)));
                   },
                   child: Text(
                     "Activate Profile".toUpperCase(),
@@ -102,7 +183,7 @@ class _ProfileActivationScreenState extends State<ProfileActivationScreen> {
                   ),
                   prefixIcon: Icon(Icons.phone),
                   prefix: Padding(
-                    child: Text('+27'),
+                    child: Text('27'),
                     padding: EdgeInsets.only(left: 0, top: 0,right: 10, bottom: 0),
                   ),
                   labelText: 'Cellphone number',

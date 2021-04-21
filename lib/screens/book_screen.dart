@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:bears_palace_app/screens/bookings/add_booking_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,24 +17,37 @@ class _BookScreenState extends State<BookScreen> {
 
   var _bookings;
   bool isLoading = false;
+  bool isProfileActivated = false;
+  var myBookingsList;
 
   fetchBookings() async {
-    setState(() {
-      isLoading = true;
-    });
+    FirebaseAuth.instance
+        .authStateChanges()
+        .listen((User user) {
+      if (user == null) {
+        setState(() {
+          isProfileActivated = false;
+        });
+      } else {
+        FirebaseFirestore.instance
+            .collection('bookings')
+            .where('uid', isEqualTo: user.uid)
+            .get()
+            .then((value) {
+              if (value.docs.isEmpty) {
+                print('You do not have any bookings. Make you first booking');
+              }else{
+                setState(() {
+                  _bookings =  value;
+                });
+              }
 
-    var endpointUrl = 'http://backend.bearspalace.co.za/api/v1/bookings/get_bookings.php';
-    Map<String, String> queryParams = {
-      'uid': 'FirebaseAuth.instance.currentUser.uid',
-    };
-    String queryString = Uri(queryParameters: queryParams).query;
+        });
 
-    var requestUrl = endpointUrl + '?' + queryString;
-    var response = await http.get(requestUrl);
-    _bookings = json.decode(response.body);
-
-    setState(() {
-      isLoading = true;
+        setState(() {
+          isProfileActivated = true;
+        });
+      }
     });
 
   }
@@ -69,7 +84,7 @@ class _BookScreenState extends State<BookScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _bookings  != null ? _buildNoBookings(context): _buildBookingsTile(context),
+            _bookings  == null ? _buildNoBookings(context): _buildBookingsTile(context),
           ],
         ),
       )//_buildBookingsTile(context) ,
