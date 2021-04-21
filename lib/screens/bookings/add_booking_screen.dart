@@ -1,14 +1,6 @@
-import 'dart:convert';
 
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:bears_palace_app/models/service_model.dart';
 import 'package:bears_palace_app/screens/spa/spa_services_screen.dart';
-import 'package:cool_alert/cool_alert.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:dropdown_formfield/dropdown_formfield.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class AddBookingScreen extends StatefulWidget {
