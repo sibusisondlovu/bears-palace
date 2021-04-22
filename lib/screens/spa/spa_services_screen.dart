@@ -1,3 +1,4 @@
+import 'package:bears_palace_app/models/service_model.dart';
 import 'package:bears_palace_app/screens/spa/spa_booking_form.dart';
 import 'package:flutter/material.dart';
 
@@ -7,8 +8,10 @@ class SpaServicesScreen extends StatefulWidget {
 }
 
 class _SpaServicesScreenState extends State<SpaServicesScreen> {
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Spa Services'),
@@ -31,12 +34,12 @@ class _SpaServicesScreenState extends State<SpaServicesScreen> {
                       style: TextStyle(
                         fontSize: 13
                       ),),
-                      FlatButton(onPressed: (){
+                      ElevatedButton(onPressed: (){
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => SpaBookingFormScreen()),
                         );
-                      }, child: Text('Book'))
+                      }, child: Text('Book Now'))
                     ],
                   ),
                   trailing: Column(

@@ -1,3 +1,4 @@
+import 'package:bears_palace_app/screens/spa/spa_service_booking_confirm_screen.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -130,13 +131,12 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 50,
-      child: FlatButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        color: Colors.grey,
-        padding: EdgeInsets.all(10.0),
+      child: ElevatedButton(
         onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SpaServiceBookingConfirmScreen()),
+          );
         },
         child: Text(
           "Continue",
