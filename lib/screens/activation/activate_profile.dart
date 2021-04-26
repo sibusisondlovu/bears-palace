@@ -26,13 +26,7 @@ class _ActivateProfileState extends State<ActivateProfile> {
             ),
             Text('Thank you for using our app! At the moment you only \n have access to limited functionality. Please activate \nyour profile to enjoy the best experience on the go.', textAlign: TextAlign.center,),
 
-            FlatButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                  ),
-              color: Colors.white,
-              textColor: Colors.red,
-              padding: EdgeInsets.all(10.0),
+            ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
@@ -46,18 +40,12 @@ class _ActivateProfileState extends State<ActivateProfile> {
                 ),
               ),
             ),
-            FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              color: Colors.white,
-              textColor: Colors.red,
-              padding: EdgeInsets.all(10.0),
+            ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
               child: Text(
-                "Dimiss".toUpperCase(),
+                "Dismiss".toUpperCase(),
                 style: TextStyle(
                   fontSize: 14.0,
                 ),

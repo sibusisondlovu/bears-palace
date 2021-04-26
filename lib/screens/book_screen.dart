@@ -65,7 +65,7 @@ class _BookScreenState extends State<BookScreen> {
         backgroundColor: Color(int.parse(AppColors.primaryColor)),
         title: Text('My Bookings'),
         actions: [
-          FlatButton(
+          ElevatedButton(
             onPressed: (){
               Navigator.push(
                 context,

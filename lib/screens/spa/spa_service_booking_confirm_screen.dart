@@ -1,11 +1,57 @@
+import 'package:bears_palace_app/screens/payfast/payfast_check_out_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SpaServiceBookingConfirmScreen extends StatefulWidget {
+
+  final booking;
+
+  SpaServiceBookingConfirmScreen({Key key, @required this.booking}):super(key: key);
+
   @override
   _SpaServiceBookingConfirmScreenState createState() => _SpaServiceBookingConfirmScreenState();
+
 }
 
 class _SpaServiceBookingConfirmScreenState extends State<SpaServiceBookingConfirmScreen> {
+
+  var _userInfo;
+
+  _getCurrentUserDetails()  async{
+
+    FirebaseAuth.instance
+        .authStateChanges()
+        .listen((User user) async {
+      if (user == null) {
+        // print('User is currently signed out!');
+      } else {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+          if (documentSnapshot.exists) {
+            setState(() {
+              _userInfo = documentSnapshot.data();
+            });
+
+            print('Document data from Booking Form: ${documentSnapshot.data()}');
+          } else {
+            print('Document does not exist on the database with UID:' + user.uid);
+          }
+        });
+      }
+    });
+
+  }
+
+  @override
+  void initState() {
+    _getCurrentUserDetails();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,13 +75,11 @@ class _SpaServiceBookingConfirmScreenState extends State<SpaServiceBookingConfir
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Name and Surname:'),
-                        Text('Sibusiso Ndlovu'),
+                        _userInfo !=null? Text(_userInfo['displayName']): Container(),
                         SizedBox(height: 10,),
                         Text('Contact Number:'),
-                        Text('083 743 5269'),
+                        _userInfo !=null? Text(_userInfo['phoneNumber']): Container(),
                         SizedBox(height: 10,),
-                        Text('Email Address:'),
-                        Text('sibusiso@jaspa.co.za'),
                       ],
                     ),
                   ),
@@ -49,16 +93,16 @@ class _SpaServiceBookingConfirmScreenState extends State<SpaServiceBookingConfir
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Service:'),
-                        Text('Queen of Treatment'),
+                        Text(widget.booking['service'].toString()),
                         SizedBox(height: 10,),
                         Text('Appointment Date:'),
-                        Text('30 April 2021, @ 14h00'),
+                        Text(widget.booking['bookingDate'].toString()),
                         SizedBox(height: 10,),
                         Text('Number of people:'),
-                        Text('1'),
+                        Text(widget.booking['numberOfGuests'].toString()),
                         SizedBox(height: 10,),
-                        Text('Amount:'),
-                        Text('R 1,456.90'),
+                        Text('Cost:'),
+                        Text('R ' + widget.booking['price'].toString()),
                       ],
                     ),
                   ),
@@ -76,11 +120,27 @@ class _SpaServiceBookingConfirmScreenState extends State<SpaServiceBookingConfir
       width: MediaQuery.of(context).size.width,
       height: 50,
       child: ElevatedButton(
+
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SpaServiceBookingConfirmScreen()),
-          );
+          var data = {
+            'totalAmount': 1000,
+            'bookingReferenceNumber': '123456789'
+          };
+
+           Navigator.push(
+             context,
+             MaterialPageRoute(builder: (context) => PayfastCheckOutScreen(),settings: RouteSettings(
+               arguments: data
+             )),
+           );
+
+           print('going to payfast');
+          // save booking to database -> cloud firestore
+          // generate booking reference number
+          // send email to admin with new booking details
+          // on success payment, update booking status
+          
+
         },
         child: Text(
           "PAY NOW",

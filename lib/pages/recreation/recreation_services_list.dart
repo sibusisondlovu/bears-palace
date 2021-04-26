@@ -1,5 +1,6 @@
 
 
+import 'package:bears_palace_app/screens/horse_riding/horse_riding_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../colors.dart';
@@ -25,7 +26,14 @@ class RecreationServicesList extends StatelessWidget {
               SizedBox(height: 10,),
               Image.asset('assets/images/go_karting.jpg'),
               SizedBox(height: 10,),
-              Image.asset('assets/images/horse_riding.jpg'),
+              GestureDetector(
+                  onTap: (){
+                     Navigator.push(
+                       context,
+                       MaterialPageRoute(builder: (context) => HorseRidingScreen()),
+                     );
+                  },
+                  child: Image.asset('assets/images/horse_riding.jpg')),
               SizedBox(height: 10,),
               Image.asset('assets/images/quad_bikes.jpg'),
             ]
