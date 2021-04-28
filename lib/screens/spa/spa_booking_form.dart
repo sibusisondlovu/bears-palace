@@ -21,7 +21,6 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
 
   String _strBookingDate;
   String _strStartTime;
-  String _strEndTime;
   int _numberOfGuests = 0;
 
   @override
@@ -41,7 +40,6 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
               children: [
                 _buildBookingDate(context),
                 _buildBookingStartTime(context),
-                _buildBookingEndTime(context),
                 SizedBox(height: 15,),
                 Text('Number of people'),
                 SizedBox(
@@ -74,14 +72,14 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
             _strBookingDate = dateFormat.format(value);
           } ,
           decoration: InputDecoration(
-            hintText: 'Tap to select date of booking' ,
+            hintText: 'Tap to select date' ,
           ) ,
           onShowPicker: (context , currentValue) {
             return showDatePicker(
                 context: context ,
                 firstDate: DateTime(2021) ,
                 initialDate: currentValue ?? DateTime.now() ,
-                lastDate: DateTime(2100));
+                lastDate: DateTime(2022));
           } ,
         ) ,
       ) ,
@@ -98,7 +96,7 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
             _strStartTime = timeFormat.format(value);
           },
           decoration:
-          InputDecoration(hintText: 'Tap to select start time'),
+          InputDecoration(hintText: 'Tap to select time'),
           onShowPicker: (context, currentValue) async {
             final time = await showTimePicker(
               context: context,
@@ -112,29 +110,6 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
     );
   }
 
-  Widget _buildBookingEndTime(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: DateTimeField(
-          format: timeFormat,
-          onChanged: (value) {
-            _strEndTime = timeFormat.format(value);
-          },
-          decoration:
-          InputDecoration(hintText: 'Tap to select finish time'),
-          onShowPicker: (context, currentValue) async {
-            final time = await showTimePicker(
-              context: context,
-              initialTime:
-              TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-            );
-            return DateTimeField.convert(time);
-          },
-        ),
-      ),
-    );
-  }
 
   Widget _buildContinueButton(BuildContext context) {
     return Container(
@@ -162,16 +137,6 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
             return;
           }
 
-          if (_strEndTime == null) {
-            CoolAlert.show(
-              context: context,
-              type: CoolAlertType.error,
-              title: "Field Required",
-              text: "Please select finish time",
-            );
-            return;
-          }
-
           if (_numberOfGuests == 0) {
             CoolAlert.show(
               context: context,
@@ -187,14 +152,9 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
             'price' : widget.service['price'],
             'bookingDate': _strBookingDate,
             'startTime': _strStartTime,
-            'endTime': _strEndTime,
             'numberOfGuests' : _numberOfGuests
           };
 
-          // widget.service['numberOfGuests'] = _numberOfGuests;
-          // widget.service['strBookingDate'] = _strBookingDate;
-          // widget.service['strStartTime'] = _strStartTime;
-          // widget.service['strEndTime'] = _strEndTime;
 
           Navigator.push(
             context,
