@@ -1,4 +1,5 @@
 import 'package:bears_palace_app/screens/spa/spa_service_booking_confirm_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,6 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.service['name']),
@@ -45,6 +45,7 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
                 SizedBox(
                     width: 120,
                     child: TextField(
+                      keyboardType: TextInputType.number,
                       onChanged: (value){
                         _numberOfGuests = int.parse(value);
                       },
@@ -109,7 +110,6 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
       ),
     );
   }
-
 
   Widget _buildContinueButton(BuildContext context) {
     return Container(

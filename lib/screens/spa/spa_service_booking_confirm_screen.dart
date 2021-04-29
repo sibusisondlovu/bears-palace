@@ -1,7 +1,9 @@
 import 'package:bears_palace_app/screens/payfast/payfast_check_out_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class SpaServiceBookingConfirmScreen extends StatefulWidget {
 
@@ -17,6 +19,7 @@ class SpaServiceBookingConfirmScreen extends StatefulWidget {
 class _SpaServiceBookingConfirmScreenState extends State<SpaServiceBookingConfirmScreen> {
 
   var _userInfo;
+  final String _bookingReferenceNumber = 'TBP' + (DateTime.now().millisecondsSinceEpoch).toString();
 
   _getCurrentUserDetails()  async{
 
@@ -42,6 +45,55 @@ class _SpaServiceBookingConfirmScreenState extends State<SpaServiceBookingConfir
           }
         });
       }
+    });
+
+  }
+
+  bool isCreatingBooking = false;
+
+  void createBooking() {
+
+    setState(() {
+      isCreatingBooking = true;
+    });
+    CollectionReference bookingsRef = FirebaseFirestore.instance.collection('bookings');
+
+    final f = new DateFormat('dd MMM yyyy');
+
+    bookingsRef.doc(_bookingReferenceNumber).set({
+      'bookingReferenceNumber': _bookingReferenceNumber,
+      'uid': _userInfo['uid'],
+      'name': _userInfo['displayName'],
+      'contactNumber': _userInfo['phoneNumber'],
+      'status': 'UNPAID',
+      'bookingDate': f.format(new DateTime.now()),
+      'bookedDate':widget.booking['bookingDate'].toString(),
+      'numberOfPeople': widget.booking['numberOfGuests'],
+      'price': widget.booking['price'] * widget.booking['numberOfGuests']
+    }).then((value) {
+        var data = {
+        'totalAmount': widget.booking['price'] * widget.booking['numberOfGuests'],
+        'bookingReferenceNumber':_bookingReferenceNumber
+        };
+
+        setState(() {
+          isCreatingBooking = false;
+        });
+
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => PayfastCheckOutScreen(),settings: RouteSettings(
+            arguments: data
+        )),
+      );
+    })
+    .catchError((onError){
+      CoolAlert.show(
+        context: context,
+        type: CoolAlertType.error,
+        title: "An Error Occurred",
+        text: onError.toString(),
+      );
     });
 
   }
@@ -92,6 +144,9 @@ class _SpaServiceBookingConfirmScreenState extends State<SpaServiceBookingConfir
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text('Reference No:'),
+                        Text(_bookingReferenceNumber),
+                        SizedBox(height: 10,),
                         Text('Service:'),
                         Text(widget.booking['service'].toString()),
                         SizedBox(height: 10,),
@@ -102,7 +157,7 @@ class _SpaServiceBookingConfirmScreenState extends State<SpaServiceBookingConfir
                         Text(widget.booking['numberOfGuests'].toString()),
                         SizedBox(height: 10,),
                         Text('Cost:'),
-                        Text('R ' + widget.booking['price'].toString()),
+                        Text('R ' + (widget.booking['price'] * widget.booking['numberOfGuests'] ).toString() ),
                       ],
                     ),
                   ),
@@ -122,27 +177,9 @@ class _SpaServiceBookingConfirmScreenState extends State<SpaServiceBookingConfir
       child: ElevatedButton(
 
         onPressed: () {
-          var data = {
-            'totalAmount': 1000,
-            'bookingReferenceNumber': '123456789'
-          };
-
-           Navigator.push(
-             context,
-             MaterialPageRoute(builder: (context) => PayfastCheckOutScreen(),settings: RouteSettings(
-               arguments: data
-             )),
-           );
-
-           print('going to payfast');
-          // save booking to database -> cloud firestore
-          // generate booking reference number
-          // send email to admin with new booking details
-          // on success payment, update booking status
-          
-
+          createBooking();
         },
-        child: Text(
+        child: isCreatingBooking? CircularProgressIndicator(): Text(
           "PAY NOW",
           style: TextStyle(
             fontSize: 14.0,
