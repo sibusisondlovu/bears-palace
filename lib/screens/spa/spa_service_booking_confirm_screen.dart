@@ -61,6 +61,7 @@ class _SpaServiceBookingConfirmScreenState extends State<SpaServiceBookingConfir
     final f = new DateFormat('dd MMM yyyy');
 
     bookingsRef.doc(_bookingReferenceNumber).set({
+      'service': widget.booking['service'],
       'bookingReferenceNumber': _bookingReferenceNumber,
       'uid': _userInfo['uid'],
       'name': _userInfo['displayName'],

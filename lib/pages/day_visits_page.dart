@@ -34,7 +34,7 @@ class DayVisitsPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => SpaServicesScreen()),
                   );
                 },
-                child: Image.asset('assets/images/spa.jpg')),
+                child: Image.asset('assets/images/spa.png')),
           ],
         ),
       ),

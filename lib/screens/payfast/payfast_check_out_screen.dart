@@ -37,6 +37,7 @@ class _PayfastCheckOutScreenState extends State<PayfastCheckOutScreen> {
     return WillPopScope(
       onWillPop: (){
         _onBackPressed();
+        return null;
       },
       child: Scaffold(
         backgroundColor: Color(int.parse(AppColors.primaryColor)),

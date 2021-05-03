@@ -37,6 +37,7 @@ class _BookScreenState extends State<BookScreen> {
               if (value.docs.isEmpty) {
                 print('You do not have any bookings. Make you first booking');
               }else{
+                print(_bookings);
                 setState(() {
                   _bookings =  value;
                 });
@@ -64,55 +65,53 @@ class _BookScreenState extends State<BookScreen> {
       appBar: AppBar(
         backgroundColor: Color(int.parse(AppColors.primaryColor)),
         title: Text('My Bookings'),
-        actions: [
-          ElevatedButton(
-            onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddBookingScreen()),
-              );
-            },
-            child: Text('Book Now', style: TextStyle(
-              fontFamily: 'Bold',
-              color: Colors.white
-            ),),)
-        ],
       ),
       body:Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _bookings  == null ? _buildNoBookings(context): _buildBookingsTile(context),
-          ],
-        ),
+        child: _buildBookingsTile(context)
       )//_buildBookingsTile(context) ,
     );
   }
 
   // bookings tile
   Widget _buildBookingsTile(BuildContext context) {
-    return  Expanded(
-      child: ListView.builder(
-        padding: const EdgeInsets.all(10),
-        itemCount: _bookings == null ? 0 : _bookings.length,
-        itemBuilder: (context, index){
+    CollectionReference spaServicesCollection = FirebaseFirestore.instance.collection('bookings');
 
-          return  GestureDetector(
-            onTap: (){
+    return FutureBuilder<QuerySnapshot>(
+      future: spaServicesCollection.get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
-            },
-            child: Card(
-              child: ListTile(
-                title: Text(_bookings[index]['service']),
-                subtitle: Text(_bookings[index]['reference_number'] + ' - ' + _bookings[index]['booking_date']),
-                trailing: Icon(Icons.more_vert),
-              ),
-            ),
-          );
-        },
-        ),
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Center(child: Text("Something went wrong"));
+          }
+
+          if (snapshot.hasData) {
+            final List<DocumentSnapshot> listOfSpaServices = snapshot.data.docs;
+            return ListView(
+                children: listOfSpaServices.map((doc) => Card(
+                  child: ListTile(
+                    title: Text(doc['service']),
+                    subtitle: Text(doc['bookingReferenceNumber']),
+                    trailing: Text(doc['bookedDate']),
+                  ),
+                )).toList());
+          }else {
+            return _buildNoBookings(context);
+          }
+        }
+
+        return Center(
+          child: Column(
+            children: [
+              CircularProgressIndicator(),
+              Text("loading"),
+            ],
+          ),
+        );
+      },
     );
   }
 

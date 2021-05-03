@@ -52,7 +52,8 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
 
                     )),
                 SizedBox(height: 15,),
-                Text('Booking terms and conditions goes here', style: TextStyle(
+                Text('By placing an order, clicking CONTINUE to accept this Agreement, '
+                    ' you agree to all the terms and conditions of this Terms of Service Agreement.', style: TextStyle(
                   fontSize: 12
                 ),),
                 SizedBox(height: 15,),
