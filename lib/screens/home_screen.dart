@@ -48,98 +48,239 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _getCurrentUserDetails();
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: Colors.black12,
-          body: Column(children: [
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)),
-              child: Container(
-                color: Colors.black,
-                child: Opacity(
-                    opacity: 0.3,
-                    child: Image.asset('assets/images/home_screen_bg.jpg')),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('CAROLINA RESORTS'),
+          centerTitle: true,
+          actions: [Icon(Icons.notification_important)],
+        ),
+        backgroundColor: Colors.black12,
+        body: SingleChildScrollView(
+          child: Column(children: [
+            headerBackgroundImage(context),
+
+            belowHeaderScrollingList(context),
+            callToActionCard(context),
+            rewardsCard(context)
+          ]),
+        ));
+  }
+
+  Widget callToActionCard(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Stack(children: [
+        ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(25)),
+          child: Container(
+            color: Colors.blue,
+            child: Opacity(
+                opacity: 0.3,
+                child: Image.asset(
+                  'assets/images/home_screen_bg.jpg',
+                  fit: BoxFit.cover,
+                  width: MediaQuery.of(context).size.width,
+                  height: 180,
+                )),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Book Now for the Best Rates',
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
               ),
-            ),
-            SizedBox(height: 5,),
-            Container(
-              height: 130,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.all(10),
-                children: <Widget>[
-                  Container(
-                    width: 150,
-                      height: 90,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                        color: Colors.blueAccent,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.work, size: 50,color: Colors.white,),
-                                Text('Check In', style: TextStyle(
-                                  color: Colors.white
-                                ),),
-                              ],
-                            ),
-                          ))),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Best rates guaranteed, entertainment deals, and \naccess to exclusive rooms & suiters',
+                style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    'Book now',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ))
+            ],
+          ),
+        )
+      ]),
+    );
+  }
 
-                  Container(
-                      width: 150,
-                      height: 90,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.airline_seat_flat, size: 50,color: Colors.blueAccent,),
-                                Text('Book stay', style: TextStyle(
-                                    color: Colors.blueAccent
-                                ),),
-                              ],
-                            ),
-                          ))),
-
-                  Container(
-                      width: 150,
-                      height: 90,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.wb_sunny_outlined, size: 50,color: Colors.blueAccent,),
-                                Text('Day visits', style: TextStyle(
-                                    color: Colors.blueAccent
-                                ),),
-                              ],
-                            ),
-                          ))),
-
+  Widget headerBackgroundImage(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+      child: Container(
+        color: Colors.black,
+        child: Stack(
+          children: [
+            Opacity(
+                opacity: 0.3,
+                child: Image.asset('assets/images/home_screen_bg.jpg',
+                height: 180,
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,)),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 60,),
+                  Text(
+                    'Welcome to \nCarolina Resort',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 28),
+                  ),
                 ],
               ),
             )
-          ])),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget belowHeaderScrollingList(BuildContext context) {
+    return Container(
+      height: 120,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.all(10),
+        children: <Widget>[
+          Container(
+              width: 150,
+              height: 70,
+              child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  color: Colors.blueAccent,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.work,
+                          size: 40,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          'Check In',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ))),
+          Container(
+              width: 150,
+              height: 70,
+              child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.airline_seat_flat,
+                          size: 40,
+                          color: Colors.blueAccent,
+                        ),
+                        Text(
+                          'Book stay',
+                          style: TextStyle(color: Colors.blueAccent),
+                        ),
+                      ],
+                    ),
+                  ))),
+          Container(
+              width: 150,
+              height: 70,
+              child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.wb_sunny_outlined,
+                          size: 40,
+                          color: Colors.blueAccent,
+                        ),
+                        Text(
+                          'Day visits',
+                          style: TextStyle(color: Colors.blueAccent),
+                        ),
+                      ],
+                    ),
+                  ))),
+        ],
+      ),
+    );
+  }
+
+  Widget rewardsCard(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: 10,),
+        RichText(
+            text: TextSpan(
+              text: 'Star Life',
+              style: TextStyle(color: Colors.blueAccent, fontSize: 16),
+              children: <TextSpan>[
+                TextSpan(
+                  text: ' Rewards',
+                  style: TextStyle(color: Colors.blueAccent, fontSize: 16, fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+        ),
+                  SizedBox(height: 15,),
+                  Text('Book your stay and skip the check-in. Earn rewards whenever you dine, stay or play.')
+      ]),
+          )),
     );
   }
 }
