@@ -22,6 +22,7 @@ class _RootLayoutScreenState extends State<RootLayoutScreen> {
     BookScreen(),
     ChatsScreen(),
     AccountScreen(),
+    AccountScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -36,37 +37,46 @@ class _RootLayoutScreenState extends State<RootLayoutScreen> {
       body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.explore,color: Color(int.parse(AppColors.primaryColor))),
-          title: Text(
-            'Discover', style: TextStyle(
-              color: Color(int.parse(AppColors.primaryColor))
-          ),
-          ),
+          BottomNavigationBarItem(
+            label: 'Home',
+            activeIcon: null,
+            icon: Icon(Icons.home_filled,
+                color: Color(int.parse(AppColors.primaryColor))),
 
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today_outlined,
-              color: Color(int.parse(AppColors.primaryColor))),
-            title: Text(
-              'My Bookings', style: TextStyle(
-                color: Color(int.parse(AppColors.primaryColor))
-            ),
-            ),
+          BottomNavigationBarItem(
+            label: 'Dinning',
+            icon: Icon(Icons.food_bank_outlined,
+                color: Color(int.parse(AppColors.primaryColor))),
+
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.chat,color: Color(int.parse(AppColors.primaryColor))),
-            title: Text(
-              'Bears Chat', style: TextStyle(
-                color: Color(int.parse(AppColors.primaryColor))
-            ),
-            ),
+          BottomNavigationBarItem(
+            label: 'Resort',
+            icon: Icon(Icons.house_outlined,
+                color: Color(int.parse(AppColors.primaryColor))),
+
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle,color: Color(int.parse(AppColors.primaryColor))),
-            title: Text(
-              'Account', style: TextStyle(
-                color: Color(int.parse(AppColors.primaryColor))
-            ),
-            ),
+          BottomNavigationBarItem(
+            label: 'Rewards',
+            icon: Icon(Icons.wallet_giftcard,
+                color: Color(int.parse(AppColors.primaryColor))),
+
           ),
+          BottomNavigationBarItem(
+            label: 'Me',
+            icon: Icon(Icons.person,
+                color: Color(int.parse(AppColors.primaryColor))),
+
+          ),
+
         ],
+          selectedItemColor: Colors.blueAccent,
+          selectedLabelStyle: TextStyle(
+            fontWeight: FontWeight.bold
+          ),
+          unselectedItemColor: Colors.blueGrey,
+          showUnselectedLabels: true,
+          unselectedFontSize: 12,
           type: BottomNavigationBarType.shifting,
           currentIndex: _currentIndex,
           iconSize: 30,

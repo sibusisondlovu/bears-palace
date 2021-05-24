@@ -5,6 +5,7 @@ import 'package:bears_palace_app/pages/day_visits_page.dart';
 import 'package:bears_palace_app/screens/activation/activate_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,15 +15,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   bool isLoading = false;
   var _userInfo;
 
-  _getCurrentUserDetails()  async{
-
-    FirebaseAuth.instance
-        .authStateChanges()
-        .listen((User user) async {
+  _getCurrentUserDetails() async {
+    FirebaseAuth.instance.authStateChanges().listen((User user) async {
       if (user == null) {
         // print('User is currently signed out!');
       } else {
@@ -35,128 +32,114 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               _userInfo = documentSnapshot.data();
             });
-
           } else {
-            print('Document does not exist on the database with UID:' + user.uid);
+            print(
+                'Document does not exist on the database with UID:' + user.uid);
           }
         });
       }
     });
-
   }
 
   @override
   void initState() {
     super.initState();
-    _getCurrentUserDetails();
   }
 
   @override
   Widget build(BuildContext context) {
     _getCurrentUserDetails();
-    return Scaffold(
-      drawer: sideDrawer(context),
-      appBar: AppBar(
-        backgroundColor: Color(int.parse(AppColors.primaryColor)),
-        title: Text('Bears Palace'),
-        actions: [
-          Icon(Icons.notification_important),
-          SizedBox(width: 5,)
-        ],
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: _userInfo !=null? Text('Hello, '+  _userInfo['displayName'] ):  Text('Hello, Guest'),
-                ),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Your have Bears Bucks'),
-                        ListTile(
-                          title: _userInfo!=null? Text(_userInfo['points'].toString() +' BB', style: TextStyle(
-                            fontSize: 28
-                          ),): Text('0.00 BB', style: TextStyle(
-                              fontSize: 28
-                          ),),
-                          trailing: OutlineButton(
-                            child: Text('Redeem'),
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: Colors.black12,
+          body: Column(children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20)),
+              child: Container(
+                color: Colors.black,
+                child: Opacity(
+                    opacity: 0.3,
+                    child: Image.asset('assets/images/home_screen_bg.jpg')),
+              ),
+            ),
+            SizedBox(height: 5,),
+            Container(
+              height: 130,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.all(10),
+                children: <Widget>[
+                  Container(
+                    width: 150,
+                      height: 90,
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
-                        ),
-                        _userInfo !=null && _userInfo['status']== 'ACTIVATED'? Container(): Text('Your account has not been activated. Please activate account to use full app features'),
-                        _userInfo !=null && _userInfo['status']== 'ACTIVATED'? Container(): RaisedButton(onPressed: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ActivateProfile()),
-                          );
-                        },
-                        child: Text('Activate Profile'),)
-                      ],
-                    ),
-                  ),
-                ),SizedBox(height: 25,),
-                Column(
-                  children: [
-                    GestureDetector(
-                        onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => DayVisitsPage()),
-                          );
-                        },
-                        child: Image.asset('assets/images/day_visit.jpg')),
-                    SizedBox(height: 10,),
-                    Image.asset('assets/images/bookings.jpg'),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+                        color: Colors.blueAccent,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.work, size: 50,color: Colors.white,),
+                                Text('Check In', style: TextStyle(
+                                  color: Colors.white
+                                ),),
+                              ],
+                            ),
+                          ))),
 
-  Widget sideDrawer(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/app_logo.png',),
-                fit: BoxFit.cover,
-              )
-            ),
-            child: Text("Header"),
+                  Container(
+                      width: 150,
+                      height: 90,
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
 
-          ),
-          ListTile(
-            title: Text("Home"),
-          ),
-          ListTile(
-            title: Text("Home"),
-          ),
-          ListTile(
-            title: Text("Home"),
-          ),
-          Divider(),
-          ListTile(
-            title: Text('App version 1.0.0'),
-            onTap: () {},
-          ),
-        ],
-      ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.airline_seat_flat, size: 50,color: Colors.blueAccent,),
+                                Text('Book stay', style: TextStyle(
+                                    color: Colors.blueAccent
+                                ),),
+                              ],
+                            ),
+                          ))),
+
+                  Container(
+                      width: 150,
+                      height: 90,
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.wb_sunny_outlined, size: 50,color: Colors.blueAccent,),
+                                Text('Day visits', style: TextStyle(
+                                    color: Colors.blueAccent
+                                ),),
+                              ],
+                            ),
+                          ))),
+
+                ],
+              ),
+            )
+          ])),
     );
   }
 }

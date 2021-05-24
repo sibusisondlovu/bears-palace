@@ -3,6 +3,8 @@ import 'package:bears_palace_app/screens/onboarding_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'screens/home_screen.dart';
+
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'The Bears Palace',
       theme: ThemeData(fontFamily: 'Regular'),
-      home: OnboardingScreen()
+      home: RootLayoutScreen()
     );
   }
 }
