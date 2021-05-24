@@ -36,11 +36,22 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
                   children: [
                     checkinCard(context),
                     guestsAndRoomsCard(context),
+                    SizedBox(height: 20,),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      height: 50,
                       child: ElevatedButton(
-                          onPressed: () {}, child: Text('Search')),
-                    )
+                          style: ElevatedButton.styleFrom(
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          onPressed: () {}, child: Text('Search', style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16
+                      ),)),
+                    ),
+                    SizedBox(height: 20,),
                   ],
                 ),
               ),
