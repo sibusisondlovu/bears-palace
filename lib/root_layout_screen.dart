@@ -45,14 +45,14 @@ class _RootLayoutScreenState extends State<RootLayoutScreen> {
 
           ),
           BottomNavigationBarItem(
-            label: 'Dinning',
+            label: 'Restaurant',
             icon: Icon(Icons.food_bank_outlined,
                 color: Color(int.parse(AppColors.primaryColor))),
 
           ),
           BottomNavigationBarItem(
-            label: 'Resort',
-            icon: Icon(Icons.house_outlined,
+            label: 'Explore',
+            icon: Icon(Icons.map_outlined,
                 color: Color(int.parse(AppColors.primaryColor))),
 
           ),

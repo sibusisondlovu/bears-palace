@@ -20,6 +20,7 @@ dependencies:
   datetime_picker_formfield: ^1.0.0
   introduction_screen: ^1.0.9
   circular_profile_avatar: ^1.0.8
+  intl: ^0.17.0
   image_picker: ^0.6.4
   dropdown_formfield: ^0.1.3
 
