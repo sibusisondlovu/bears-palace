@@ -1,3 +1,4 @@
+import 'package:bears_palace_app/screens/confirm_payment_screen.dart';
 import 'package:flutter/material.dart';
 
 class RoomBookingScreen extends StatefulWidget {
@@ -258,8 +259,12 @@ class _RoomBookingScreenState extends State<RoomBookingScreen> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.9,
       child: ElevatedButton(
-        child: Text('PAY NOW'),
-        onPressed: (){},
+        child: Text('PAY NOW (R 200.00)'),
+        onPressed: (){
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context)=>ConfirmPaymentScreen()
+          ));
+        },
       ),
     );
   }

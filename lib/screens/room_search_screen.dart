@@ -15,9 +15,12 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
   String _checkOutDate = 'Tap to select';
   String _guests = '1';
 
+  bool _isSearching = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
         body: Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -37,8 +40,8 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
                     checkinCard(context),
                     guestsAndRoomsCard(context),
                     SizedBox(height: 20,),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.4,
+                    _isSearching? _isBusyProcessing(context): SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
                       height: 50,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -46,7 +49,12 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
                               borderRadius: new BorderRadius.circular(20.0),
                             ),
                           ),
-                          onPressed: () {}, child: Text('Search', style: TextStyle(
+                          onPressed: () {
+                            setState(() {
+                              _isSearching = true;
+                            });
+                          },
+                          child: Text('Search', style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16
                       ),)),
@@ -219,6 +227,19 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _isBusyProcessing(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 30,
+            width: 30,
+          child: CircularProgressIndicator(),
+        ),
+        SizedBox(height: 20,),
+        Text('Please wait while searching...')
+      ],
     );
   }
 }
