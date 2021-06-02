@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ConfirmPaymentScreen extends StatefulWidget {
-  const ConfirmPaymentScreen({Key key}) : super(key: key);
+
+  final String totalAmount;
+  final String itemName;
+  final String paymentId;
+  const ConfirmPaymentScreen({Key key, this.itemName, this.paymentId, this.totalAmount}) : super(key: key);
 
   @override
   _ConfirmPaymentScreenState createState() => _ConfirmPaymentScreenState();
@@ -21,9 +25,7 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
   @override
   Widget build(BuildContext context) {
 
-    Map<String, dynamic> snap = ModalRoute.of(context).settings.arguments;
-
-
+    print('Reference number for this booking is ' + widget.paymentId);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,

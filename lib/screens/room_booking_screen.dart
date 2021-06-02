@@ -9,6 +9,45 @@ class RoomBookingScreen extends StatefulWidget {
 }
 
 class _RoomBookingScreenState extends State<RoomBookingScreen> {
+
+  String _name= "";
+  String _surname = "";
+  String _contactNumber = "";
+  String _emailAddress = "";
+  DateTime _checkinDate;
+  DateTime _checkOutDate;
+  String _roomDescription = "";
+  double _bookingCost = 0.00;
+  String _bookingStatus = "PENDING";
+  String _bookingType = "APP";
+  String _bookingReferenceNumber = "";
+
+  // break the guest name and surname
+  void _breakNameAndSurname(String fullName){
+    var splittedFullName =  fullName.split(" ");
+
+    if (splittedFullName.length > 2){
+      // Mari van Zyl
+      _name = splittedFullName[0].toString().trim().toUpperCase();
+      _surname = splittedFullName[1].toString().trim().toUpperCase() +
+          splittedFullName[2].toString().trim().toUpperCase() ;
+    }else{
+      // Sibusiso Ndlovu
+      _name = splittedFullName[0].toString().trim().toUpperCase();
+      _surname = splittedFullName[1].toString().trim().toUpperCase() ;
+    }
+  }
+
+  void _processBooking() {
+    // pass variables to webview for payfast processing
+    var currentTimeStamp = new DateTime.now().millisecondsSinceEpoch;
+
+    // convert to string
+    String buildReferenceNumber = currentTimeStamp.toString();
+    _bookingReferenceNumber = new DateTime.now().year.toString()+"/" +
+        new DateTime.now().month.toString()+"/" + buildReferenceNumber.substring(buildReferenceNumber.length - 6);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +70,6 @@ class _RoomBookingScreenState extends State<RoomBookingScreen> {
           ),
         ));
   }
-
-
   Widget _personalDetailsCard(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
@@ -254,15 +291,17 @@ class _RoomBookingScreenState extends State<RoomBookingScreen> {
         )
     );
   }
-
   Widget _paymentButton(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.9,
       child: ElevatedButton(
-        child: Text('PAY NOW (R 200.00)'),
+        child: Text('PAY NOW (R $_bookingCost)'),
         onPressed: (){
+          _processBooking();
           Navigator.push(context, MaterialPageRoute(
-            builder: (context)=>ConfirmPaymentScreen()
+            builder: (context)=>ConfirmPaymentScreen(totalAmount:_bookingCost.toString(),
+                                                      itemName: _roomDescription,
+                                                      paymentId: _bookingReferenceNumber)
           ));
         },
       ),

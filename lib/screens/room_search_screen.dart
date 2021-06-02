@@ -1,3 +1,4 @@
+import 'package:bears_palace_app/screens/room_booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -20,7 +21,9 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Check In Date')
+      ),
         body: Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -50,11 +53,14 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
                             ),
                           ),
                           onPressed: () {
-                            setState(() {
-                              _isSearching = true;
-                            });
+                            // setState(() {
+                            //   _isSearching = true;
+                            // });
+                            Navigator.push(context,
+                                MaterialPageRoute(
+                                    builder: (context) => RoomBookingScreen()));
                           },
-                          child: Text('Search', style: TextStyle(
+                          child: Text('Next', style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16
                       ),)),
@@ -97,7 +103,7 @@ class _RoomSearchScreenState extends State<RoomSearchScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Check out',
+                      'Check in',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.blueAccent),
                     ),
