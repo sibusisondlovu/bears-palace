@@ -295,7 +295,7 @@ class _RoomBookingScreenState extends State<RoomBookingScreen> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.9,
       child: ElevatedButton(
-        child: Text('PAY NOW (R $_bookingCost)'),
+        child: Text('PAY NOW(R $_bookingCost)'),
         onPressed: (){
           _processBooking();
           Navigator.push(context, MaterialPageRoute(
