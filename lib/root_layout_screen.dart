@@ -2,8 +2,10 @@ import 'package:bears_palace_app/colors.dart';
 import 'package:bears_palace_app/screens/account_screen.dart';
 import 'package:bears_palace_app/screens/book_screen.dart';
 import 'package:bears_palace_app/screens/chat/chats_screen.dart';
+import 'package:bears_palace_app/screens/explore_screen.dart';
 import 'package:bears_palace_app/screens/home_screen.dart';
 import 'package:bears_palace_app/screens/photos_screen.dart';
+import 'package:bears_palace_app/screens/restaurant_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'colors.dart';
@@ -19,8 +21,8 @@ class _RootLayoutScreenState extends State<RootLayoutScreen> {
 
   final tabs = [
     HomeScreen(),
-    BookScreen(),
-    ChatsScreen(),
+    RestaurantScreen(),
+    ExploreScreen(),
     AccountScreen(),
     AccountScreen(),
   ];

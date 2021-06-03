@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
 import 'activation/profile_activation_screen.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -52,11 +51,11 @@ class _AccountScreenState extends State<AccountScreen> {
 
 
   void _openGallery() async {
-    var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _setImageFileName(picture);
-    });
+    // var picture = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //
+    // setState(() {
+    //   _setImageFileName(picture);
+    // });
   }
 
 
