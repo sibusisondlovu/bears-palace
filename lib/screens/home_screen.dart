@@ -50,18 +50,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('CAROLINA RESORTS'),
-          centerTitle: true,
-          actions: [Icon(Icons.notification_important)],
-        ),
         backgroundColor: Colors.black12,
         body: SingleChildScrollView(
           child: Column(children: [
             headerBackgroundImage(context),
-
             belowHeaderScrollingList(context),
             callToActionCard(context),
+            callToActionCard2(context),
             rewardsCard(context)
           ]),
         ));
@@ -72,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(8.0),
       child: Stack(children: [
         ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(25)),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
           child: Container(
             color: Colors.blue,
             child: Opacity(
@@ -112,6 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                    primary: Colors.orangeAccent,
                     shape: new RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(30.0),
                     ),
@@ -119,6 +115,68 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {},
                   child: Text(
                     'Book now',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
+                  ))
+            ],
+          ),
+        )
+      ]),
+    );
+  }
+
+  Widget callToActionCard2(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Stack(children: [
+        ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          child: Container(
+            color: Colors.orangeAccent,
+            child: Opacity(
+                opacity: 0.3,
+                child: Image.asset(
+                  'assets/images/spa_treatment.jpg',
+                  fit: BoxFit.cover,
+                  width: MediaQuery.of(context).size.width,
+                  height: 180,
+                )),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Spa Treatment',
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Best rates guaranteed, entertainment deals, and \naccess to exclusive rooms & suiters',
+                style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    'View Packages',
                     style: TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.white),
                   ))
@@ -138,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Stack(
           children: [
             Opacity(
-                opacity: 0.3,
+                opacity: 0.5,
                 child: Image.asset('assets/images/home_screen_bg.jpg',
                 height: 180,
                 fit: BoxFit.cover,
@@ -177,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 70,
               child: Card(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                   color: Colors.blueAccent,
                   child: Padding(
@@ -208,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: Card(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -234,7 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 70,
               child: Card(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

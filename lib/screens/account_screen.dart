@@ -138,10 +138,6 @@ class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('My Account'),
-      ),
-      drawer: sideDrawer(context),
       body: SafeArea(
           child: isProfileActivated
               ? _profileActivated(context)
@@ -157,7 +153,7 @@ class _AccountScreenState extends State<AccountScreen> {
         radius: 100, // sets radius, default 50.0
         backgroundColor:
             Colors.transparent, // sets background color, default Colors.white
-        borderWidth: 10, // sets border, default 0.0
+        borderWidth: 1, // sets border, default 0.0
   // sets initials text, set your own style, default Text('')
         borderColor: Colors.brown, // sets border color, default Colors.white
         elevation:

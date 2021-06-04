@@ -5,7 +5,9 @@ import 'package:bears_palace_app/screens/chat/chats_screen.dart';
 import 'package:bears_palace_app/screens/explore_screen.dart';
 import 'package:bears_palace_app/screens/home_screen.dart';
 import 'package:bears_palace_app/screens/photos_screen.dart';
+import 'package:bears_palace_app/screens/resort_screen.dart';
 import 'package:bears_palace_app/screens/restaurant_screen.dart';
+import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 
 import 'colors.dart';
@@ -24,7 +26,7 @@ class _RootLayoutScreenState extends State<RootLayoutScreen> {
     RestaurantScreen(),
     ExploreScreen(),
     AccountScreen(),
-    AccountScreen(),
+    ResortScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -36,6 +38,27 @@ class _RootLayoutScreenState extends State<RootLayoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(),
+      appBar: AppBar(
+        backgroundColor: Colors.white.withOpacity(0.3),
+       // toolbarHeight: 70,
+        title: Image.asset('assets/images/app_bar_logo.png', height: 50,),
+        centerTitle: true,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ClipOval(
+            child: Image.asset(
+              'assets/images/default_profile_avatar.jpg',
+              width: 40,
+              height: 40,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        actions: [
+          Icon(Icons.notification_important_sharp, color: Colors.cyan,)
+          ],
+      ),
       body: tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
@@ -65,8 +88,8 @@ class _RootLayoutScreenState extends State<RootLayoutScreen> {
 
           ),
           BottomNavigationBarItem(
-            label: 'Me',
-            icon: Icon(Icons.person,
+            label: 'Resort',
+            icon: Icon(Icons.house_siding,
                 color: Color(int.parse(AppColors.primaryColor))),
 
           ),
