@@ -80,7 +80,7 @@ class _SpaPackagesScreenState extends State<SpaPackagesScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Detox',
+                    Text('Detox - R 870',
                         style: TextStyle(color: Colors.white, fontSize: 25)),
                     Text('Detox',
                         style: TextStyle(color: Colors.white, fontSize: 12)),
