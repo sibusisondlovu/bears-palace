@@ -4,6 +4,7 @@ import 'package:bears_palace_app/colors.dart';
 import 'package:bears_palace_app/pages/day_visits_page.dart';
 import 'package:bears_palace_app/screens/activation/activate_profile.dart';
 import 'package:bears_palace_app/screens/room_search_screen.dart';
+import 'package:bears_palace_app/screens/spa_packages_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -112,7 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: new BorderRadius.circular(30.0),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> SpaPackagesScreen()));
+                  },
                   child: Text(
                     'Book now',
                     style: TextStyle(
@@ -174,7 +177,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: new BorderRadius.circular(30.0),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> SpaPackagesScreen()));
+                  },
                   child: Text(
                     'View Packages',
                     style: TextStyle(

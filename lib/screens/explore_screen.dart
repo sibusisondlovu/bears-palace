@@ -57,10 +57,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(int.parse(AppColors.primaryColor)),
-        title: Text('Explore'),
-      ),
       body: Stack(
         children: [
           Positioned.fill(
