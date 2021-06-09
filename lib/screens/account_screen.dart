@@ -2,8 +2,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'activation/profile_activation_screen.dart';
@@ -62,7 +60,6 @@ class _AccountScreenState extends State<AccountScreen> {
   void _setImageFileName(var picture){
 
     imageFile = picture;
-    fileName = FirebaseAuth.instance.currentUser.uid+ ".jpg";
     String base64Image = base64Encode(imageFile.readAsBytesSync());
 
     _uploadFileToServer(fileName,base64Image);
@@ -94,45 +91,9 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
 
-  void checkIfUserIsLoggedIn() {
-    FirebaseAuth.instance
-        .authStateChanges()
-        .listen((User user) {
-      if (user == null) {
-        setState(() {
-          isProfileActivated = false;
-        });
-      } else {
-        // get user details from CloudFirestore
-        // cache this
-
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get()
-            .then((DocumentSnapshot documentSnapshot) {
-          if (documentSnapshot.exists) {
-            setState(() {
-              _userDetails = documentSnapshot.data();
-            });
-
-            print('Document data: ${documentSnapshot.data()}');
-          } else {
-            print('Document does not exist on the database with UID:' + user.uid);
-          }
-        });
-
-        setState(() {
-          isProfileActivated = true;
-        });
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    checkIfUserIsLoggedIn();
   }
 
   @override

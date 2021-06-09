@@ -1,7 +1,7 @@
+import 'package:bears_palace_app/helpers/colors.dart';
 import 'package:bears_palace_app/screens/activation/activate_profile.dart';
 import 'package:flutter/material.dart';
 
-import '../colors.dart';
 
 class PhotoScreen extends StatefulWidget {
   @override

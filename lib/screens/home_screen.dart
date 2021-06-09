@@ -1,12 +1,7 @@
-import 'dart:convert';
 
-import 'package:bears_palace_app/colors.dart';
-import 'package:bears_palace_app/pages/day_visits_page.dart';
-import 'package:bears_palace_app/screens/activation/activate_profile.dart';
 import 'package:bears_palace_app/screens/room_search_screen.dart';
 import 'package:bears_palace_app/screens/spa_packages_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -19,29 +14,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
   var _userInfo;
-
-  _getCurrentUserDetails() async {
-    FirebaseAuth.instance.authStateChanges().listen((User user) async {
-      if (user == null) {
-        // print('User is currently signed out!');
-      } else {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get()
-            .then((DocumentSnapshot documentSnapshot) {
-          if (documentSnapshot.exists) {
-            setState(() {
-              _userInfo = documentSnapshot.data();
-            });
-          } else {
-            print(
-                'Document does not exist on the database with UID:' + user.uid);
-          }
-        });
-      }
-    });
-  }
 
   @override
   void initState() {

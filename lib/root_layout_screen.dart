@@ -1,4 +1,4 @@
-import 'package:bears_palace_app/colors.dart';
+
 import 'package:bears_palace_app/screens/account_screen.dart';
 import 'package:bears_palace_app/screens/book_screen.dart';
 import 'package:bears_palace_app/screens/chat/chats_screen.dart';
@@ -10,7 +10,8 @@ import 'package:bears_palace_app/screens/restaurant_screen.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 
-import 'colors.dart';
+import 'helpers/colors.dart';
+
 
 class RootLayoutScreen extends StatefulWidget {
   @override

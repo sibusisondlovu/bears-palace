@@ -1,12 +1,9 @@
-import 'dart:convert';
 
+import 'package:bears_palace_app/helpers/colors.dart';
 import 'package:bears_palace_app/screens/bookings/add_booking_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import '../colors.dart';
 
 class BookScreen extends StatefulWidget {
   @override
@@ -20,41 +17,8 @@ class _BookScreenState extends State<BookScreen> {
   bool isProfileActivated = false;
   var myBookingsList;
 
-  fetchBookings() async {
-    FirebaseAuth.instance
-        .authStateChanges()
-        .listen((User user) {
-      if (user == null) {
-        setState(() {
-          isProfileActivated = false;
-        });
-      } else {
-        FirebaseFirestore.instance
-            .collection('bookings')
-            .where('uid', isEqualTo: user.uid)
-            .get()
-            .then((value) {
-              if (value.docs.isEmpty) {
-                print('You do not have any bookings. Make you first booking');
-              }else{
-                setState(() {
-                  _bookings =  value;
-                });
-              }
-
-        });
-
-        setState(() {
-          isProfileActivated = true;
-        });
-      }
-    });
-
-  }
-
   @override
   void initState() {
-    fetchBookings();
     super.initState();
   }
 

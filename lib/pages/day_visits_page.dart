@@ -1,8 +1,7 @@
+import 'package:bears_palace_app/helpers/colors.dart';
 import 'package:bears_palace_app/pages/recreation/recreation_services_list.dart';
 import 'package:bears_palace_app/screens/spa/spa_services_screen.dart';
 import 'package:flutter/material.dart';
-
-import '../colors.dart';
 
 class DayVisitsPage extends StatelessWidget {
   @override

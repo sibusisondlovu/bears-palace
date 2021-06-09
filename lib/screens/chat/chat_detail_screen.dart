@@ -1,5 +1,4 @@
-import 'package:bears_palace_app/models/chat_message_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 
 class ChatDetailPage extends StatefulWidget{
@@ -14,19 +13,10 @@ class ChatDetailPage extends StatefulWidget{
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
 
-  String _currentTypedMessage;
-  final _chatMessageController  = TextEditingController();
-
-  final CollectionReference conversationsRef  = FirebaseFirestore.instance
-      .collection('conversations')
-      .doc('sxa7qsmtcHobPVEM37nr')
-      .collection('messages');
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
-    _chatMessageController.dispose();
+
     super.dispose();
   }
 
@@ -103,9 +93,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 SizedBox(width: 15,),
                 Expanded(
                   child: TextFormField(
-                    controller: _chatMessageController,
                     onChanged: (value){
-                      _currentTypedMessage = value;
+
                     },
                     decoration: InputDecoration(
                         hintText: "Write message...",
@@ -117,7 +106,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 SizedBox(width: 15,),
                 FloatingActionButton(
                   onPressed: (){
-                    sendMessage();
                   },
                   child: Icon(Icons.send,color: Colors.white,size: 18,),
                   backgroundColor: Colors.blue,
@@ -128,82 +116,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
             ),
           ),
         ),
-        _buildMessageList(context)
+
       ],
     );
   }
 
-  Widget _buildMessageList(BuildContext context) {
-
-    return StreamBuilder<QuerySnapshot>(
-      stream: conversationsRef.snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-        if (snapshot.hasError) {
-          return Text('something went wrong');
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting){
-          return Text('loading...');
-        }
-
-        if (snapshot.data.size != 0) {
-          return new ListView(
-            shrinkWrap: true,
-            children: snapshot.data.docs.map((DocumentSnapshot document){
-              return Container(
-                padding: EdgeInsets.only(left: 14,right: 14,top: 10,bottom: 10),
-                child: Align(
-                  alignment: (document.data()['send_by'] == "username1"?Alignment.topLeft:Alignment.topRight),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: (document.data()['send_by']  == "username1"?Colors.grey.shade200:Colors.blue[200]),
-                    ),
-                    padding: EdgeInsets.all(16),
-                    child: Text(document.data()['text'], style: TextStyle(fontSize: 15),),
-                  ),
-                ),
-              );
-            }).toList(),
-          );
-        }else{
-          return new Text('No messages');
-        }
-      },
-    );
-  }
-
-  sendMessage() {
-    _chatMessageController.clear();
-
-    return conversationsRef
-        .add({
-      'time': DateTime.now().millisecondsSinceEpoch.toString(),
-      'send_by': 'username2',
-      'text': _currentTypedMessage
-    })
-        .then((value) {
-      updateLastMessage();
-    })
-        .catchError((error) => print("Failed to send message user: $error"));
-  }
-
-
-  updateLastMessage() {
-
-    CollectionReference lastMessage = FirebaseFirestore.instance.collection('chats');
-
-    return lastMessage.doc('xxm9JvekAfs5ELMrlgbG')
-        .update({
-      'time': DateTime.now().millisecondsSinceEpoch.toString(), // John Doe
-      'last_message': _currentTypedMessage, // Stokes and Sons// 42
-    })
-        .then((value) {
-
-      // update delivery tick in future
-      // update last messages
-      // set status to unread
-    })
-        .catchError((error) => print("Failed to send message user: $error"));
-  }
 }

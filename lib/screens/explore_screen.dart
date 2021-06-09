@@ -6,8 +6,6 @@ import 'package:bears_palace_app/widgets/map_user_badge_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../colors.dart';
-
 const LatLng RESORT_LOCATION = LatLng(-26.060183, 30.089174);
 
 class ExploreScreen extends StatefulWidget {

@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:bears_palace_app/helpers/constants.dart';
+import 'package:bears_palace_app/models/spa_package_model.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SpaPackagesScreen extends StatefulWidget {
   const SpaPackagesScreen({Key key}) : super(key: key);
@@ -8,12 +13,35 @@ class SpaPackagesScreen extends StatefulWidget {
 }
 
 class _SpaPackagesScreenState extends State<SpaPackagesScreen> {
+
+  Future<List<SpaPackageModel>> _getSpaTreatmentPackages() async {
+    var data = await http.get(Constants.apiServerUrl + 'services/read.php');
+
+    var jsonData = json.decode(data.body);
+
+    List<SpaPackageModel> packages = [];
+
+    for (var p in jsonData) {
+      SpaPackageModel packageModel = SpaPackageModel(
+          p['id'],
+          p['title'],
+          p['description'],
+          p['price'],
+          p['service_category_id'],
+          p['service_image_url'],
+          p['qty'],
+          p['unit_of_measurement']);
+
+      packages.add(packageModel);
+
+      print(packages.length);
+      return packages;
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer(
-           // child: SideMenuBar()
-        ),
         appBar: AppBar(),
         body: Container(
             child: Column(
@@ -27,11 +55,16 @@ class _SpaPackagesScreenState extends State<SpaPackagesScreen> {
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: 4,
-                    itemBuilder: (BuildContext ctx, int index) {
-                      return _buildCategoryCard(context);
-                    },
+                  child: FutureBuilder(
+                    future: _getSpaTreatmentPackages(),
+                    builder: (context, snapshot) {
+                      return ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext ctx, int index) {
+                          return _buildCategoryCard(context, snapshot,index);
+                        },
+                      );
+                    }
                   ),
                 ),
                 //CategoryBottomBar()
@@ -41,7 +74,7 @@ class _SpaPackagesScreenState extends State<SpaPackagesScreen> {
     );
   }
 
-  Widget _buildCategoryCard(BuildContext context) {
+  Widget _buildCategoryCard(BuildContext context, snapshot,index) {
     return Container(
         margin: EdgeInsets.all(20),
         height: 150,
@@ -80,9 +113,9 @@ class _SpaPackagesScreenState extends State<SpaPackagesScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Detox - R 870',
+                    Text(snapshot.data[index].title,
                         style: TextStyle(color: Colors.white, fontSize: 25)),
-                    Text('Detox',
+                    Text(snapshot.data[index].description,
                         style: TextStyle(color: Colors.white, fontSize: 12)),
                   ],
                 ),

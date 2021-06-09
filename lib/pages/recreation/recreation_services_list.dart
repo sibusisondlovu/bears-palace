@@ -1,8 +1,8 @@
 
 
+import 'package:bears_palace_app/helpers/colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../colors.dart';
 
 class RecreationServicesList extends StatelessWidget {
   @override

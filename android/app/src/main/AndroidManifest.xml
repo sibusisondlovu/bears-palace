@@ -7,8 +7,12 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="The Bears Palace"
+        android:label="Carolina Resort"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD6WnFHzUTSIE7mmctPF8zt5V4qnj385VE"/>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

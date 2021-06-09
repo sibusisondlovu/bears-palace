@@ -1,5 +1,4 @@
 import 'package:bears_palace_app/screens/spa/spa_service_booking_confirm_screen.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -35,9 +34,7 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildBookingDate(context),
-                _buildBookingStartTime(context),
-                _buildBookingEndTime(context),
+
                 SizedBox(height: 15,),
                 Text('Number of people'),
                 SizedBox(
@@ -53,78 +50,6 @@ class _SpaBookingFormScreenState extends State<SpaBookingFormScreen> {
             ),
           ),
         ));
-  }
-
-  Widget _buildBookingDate(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(10.0) ,
-        child: DateTimeField(
-          format: dateFormat ,
-          onChanged: (value) {
-            _strBookingDate = dateFormat.format(value);
-          } ,
-          decoration: InputDecoration(
-            hintText: 'Tap to select date of booking' ,
-          ) ,
-          onShowPicker: (context , currentValue) {
-            return showDatePicker(
-                context: context ,
-                firstDate: DateTime(2021) ,
-                initialDate: currentValue ?? DateTime.now() ,
-                lastDate: DateTime(2100));
-          } ,
-        ) ,
-      ) ,
-    );
-  }
-
-  Widget _buildBookingStartTime(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: DateTimeField(
-          format: timeFormat,
-          onChanged: (value) {
-            _strStartTime = timeFormat.format(value);
-          },
-          decoration:
-          InputDecoration(hintText: 'Tap to select start time'),
-          onShowPicker: (context, currentValue) async {
-            final time = await showTimePicker(
-              context: context,
-              initialTime:
-              TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-            );
-            return DateTimeField.convert(time);
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBookingEndTime(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: DateTimeField(
-          format: timeFormat,
-          onChanged: (value) {
-            _strEndTime = timeFormat.format(value);
-          },
-          decoration:
-          InputDecoration(hintText: 'Tap to select finish time'),
-          onShowPicker: (context, currentValue) async {
-            final time = await showTimePicker(
-              context: context,
-              initialTime:
-              TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-            );
-            return DateTimeField.convert(time);
-          },
-        ),
-      ),
-    );
   }
 
   Widget _buildContinueButton(BuildContext context) {
