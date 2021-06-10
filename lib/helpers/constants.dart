@@ -1,4 +1,4 @@
 class Constants {
 
-  static final String apiServerUrl = "http://localhost/bears-palace-app-api/api/v1/";
+  static final String apiServerUrl = "https://carolinaresort.co.za/apis/v1/";
 }

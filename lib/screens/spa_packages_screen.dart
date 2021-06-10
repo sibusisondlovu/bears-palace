@@ -13,68 +13,96 @@ class SpaPackagesScreen extends StatefulWidget {
 }
 
 class _SpaPackagesScreenState extends State<SpaPackagesScreen> {
-
   Future<List<SpaPackageModel>> _getSpaTreatmentPackages() async {
-    var data = await http.get(Constants.apiServerUrl + 'services/read.php');
+    try {
+      var data = await http.get(Constants.apiServerUrl + 'services/read.php');
 
-    var jsonData = json.decode(data.body);
+      var jsonData = json.decode(data.body);
 
-    List<SpaPackageModel> packages = [];
+      List<SpaPackageModel> packages = [];
 
-    for (var p in jsonData) {
-      SpaPackageModel packageModel = SpaPackageModel(
-          p['id'],
-          p['title'],
-          p['description'],
-          p['price'],
-          p['service_category_id'],
-          p['service_image_url'],
-          p['qty'],
-          p['unit_of_measurement']);
+      for (var p in jsonData) {
+        SpaPackageModel packageModel = SpaPackageModel(
+            p['id'],
+            p['title'],
+            p['description'],
+            p['price'],
+            p['service_category_id'],
+            p['service_image_url'],
+            p['qty'],
+            p['unit_of_measurement']);
 
-      packages.add(packageModel);
-
-      print(packages.length);
+        packages.add(packageModel);
+      }
+      print('The length is ' + packages.length.toString());
       return packages;
+    } catch (e) {
+      print('This is the error ' + e.toString());
+      return null;
     }
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
         body: Container(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: Text('Spa Packages and Facial Treatments',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.black)
-                  ),
-                ),
-                Expanded(
-                  child: FutureBuilder(
-                    future: _getSpaTreatmentPackages(),
-                    builder: (context, snapshot) {
-                      return ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (BuildContext ctx, int index) {
-                          return _buildCategoryCard(context, snapshot,index);
-                        },
-                      );
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: Text('Spa Packages and Facial Treatments',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.black)),
+            ),
+            Expanded(
+              child: FutureBuilder(
+                  future: _getSpaTreatmentPackages(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return Text('None');
+
+                      case ConnectionState.active:
+                        return Text('Active not sure what to put here');
+
+                      case ConnectionState.waiting:
+                        return Center(
+                          child: SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+
+                      case ConnectionState.done:
+                        return ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext ctx, int index) {
+
+                            if (snapshot.data.length == 0) {
+                              return Center(
+                                child: SizedBox(
+                                  child: Text('No services currently available yet'),
+                                ),
+                              );
+                            }
+                            return _buildCategoryCard(context, snapshot, index);
+                          },
+                        );
+
+                      default:
+                        return Text('Done');
                     }
-                  ),
-                ),
-                //CategoryBottomBar()
-              ],
-            )
-        )
-    );
+                  }),
+            ),
+            //CategoryBottomBar()
+          ],
+        )));
   }
 
-  Widget _buildCategoryCard(BuildContext context, snapshot,index) {
+  Widget _buildCategoryCard(BuildContext context, snapshot, index) {
     return Container(
         margin: EdgeInsets.all(20),
         height: 150,
@@ -83,9 +111,7 @@ class _SpaPackagesScreenState extends State<SpaPackagesScreen> {
             Positioned.fill(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                    'assets/images/spa.jpg',
-                    fit: BoxFit.cover),
+                child: Image.asset('assets/images/spa.jpg', fit: BoxFit.cover),
               ),
             ),
             Positioned(
